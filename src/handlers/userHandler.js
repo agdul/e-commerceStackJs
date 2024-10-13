@@ -1,25 +1,21 @@
-// const Joi = require("joi");
+
 const { createUserController, getAllUserController, getUserByNameController, getUserByIdController, updateUserController, deleteUserController } = require("../controllers/userController");
-// const userSchema = require('joi');
-// const userSchema = Joi.object({
-//     name: Joi.string().min(3).required(),
-//     username: Joi.string().min(3).required(),
-//     email: Joi.string().email().required()
-// });
+const { userSchema } = require("../schemas/userSchema");
+
 
 const getAllUserHandler = (req, res) => {    
     try {
         const { name } = req.query;
         if (name) {
             const response = getUserByNameController(name);
-            res.send(response);
+            return res.send(response);
         } else {
             const response = getAllUserController();
             console.log(response);
-            res.status(200).send(response);
+            return res.status(200).send(response);
         }
     } catch (error) {
-        res.status(400).send({Error : error.message});
+        return res.status(400).send({Error : error.message});
     }
 };
 
@@ -27,30 +23,37 @@ const getOneUserHandler = (req, res) => {
     try {
         const {id} = req.params;
         const response = getUserByIdController(id);
-        res.status(200).send(response);
+        return res.status(200).send(response);
     } catch (error) {
-        res.status(400).send({Error: error.message});
+        return res.status(400).send({Error: error.message});
     }
 }
 
-const setNewUserHandler = (req, res) => {
+const setNewUserHandler = async (req, res) => {
     try {
-        const {name, username, email } = req.body;
-        const response = createUserController(name, username, email);
-        res.status(201).send(response);        
+        const { error } = userSchema.validate(req.body);
+        if(error) return res.status(400).send(error.details[0].message);
+
+        const {name, username, email, password, role } = req.body;
+        const response = await createUserController(name, username, email, password, role);
+        return res.status(201).send(response);        
     } catch (error) {
-        res.status(400).send({Error: error.message});
+        return res.status(400).send({Error: error.message});
     }
 }
 
-const editUserHandler = (req, res) => {
+const editUserHandler = async (req, res) => {
+    const { error } = userSchema.validate(req.body);
+    if(error){
+        return res.status(400).send({Error: error.details[0].message})};
+
     try {
         const {id} = req.params;
-        const {name, username, email} = req.body;
-        const response = updateUserController(id, name, username, email);
-        res.send(response);
+        const {name, username, email, password, role} = req.body;
+        const response = await updateUserController(id, name, username, email, password, role);
+        return res.send(response);
     } catch (error) {
-        res.status(400).send({Error: error.message});
+        return res.status(400).send({Error: error.message});
     }
 }
 
@@ -58,9 +61,9 @@ const deleteUserHandler = (req, res) =>{
     try {
         const { id } = req.params;
         const response = deleteUserController(id);
-        res.send(response);
+        return res.status(200).send(response);
     } catch (error) {
-        res.status(400).send({Error: error.message});
+        return res.status(400).send({Error: error.message});
     }
 }
 module.exports = { getAllUserHandler, getOneUserHandler, setNewUserHandler, editUserHandler, deleteUserHandler };
