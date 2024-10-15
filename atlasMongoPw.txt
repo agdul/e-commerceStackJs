@@ -1,2 +1,0 @@
-username : abduljhamm
-password : Password123.asd
