@@ -1,9 +1,9 @@
 const { registerController, loginController } = require("../controllers/authController");
-const { userSchema } = require("../schemas/userSchema");
+const { userValidator } = require("../validators/userValidator");
 
 const registerHandler = async (req, res)=>{
     try {
-        const { error } = userSchema.validate(req.body);
+        const { error } = userValidator.validate(req.body);
         if(error) return res.status(400).send(error.details[0].message);
 
         const {name, username, email, password, role } = req.body;

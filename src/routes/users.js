@@ -9,7 +9,7 @@ router.get('/', getAllUserHandler);
 
 router.get('/:id', getOneUserHandler);
 
-router.post('/', setNewUserHandler);
+router.post('/', tokenMiddelware, authAdmin, setNewUserHandler);
 
 router.put('/:id', tokenMiddelware, authAdmin, editUserHandler);
 
