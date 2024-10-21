@@ -2,13 +2,12 @@
 const { createUserController, getAllUserController, getUserByNameController, getUserByIdController, updateUserController, deleteUserController } = require("../controllers/userController");
 const { userValidator, userUpdateValidator } = require("../validators/userValidator");
 
-
 const getAllUserHandler = async(req, res) => {    
     try {
         const { name } = req.query;
         if (name) {
             const response = await getUserByNameController(name);
-            return res.send(response);
+            return res.status(200).send(response);
         } else {
             const response = await getAllUserController();
             console.log(response);
@@ -51,7 +50,7 @@ const editUserHandler = async (req, res) => {
         const {id} = req.params;
         const {name, username, email, password, role} = req.body;
         const response = await updateUserController(id, name, username, email, password, role);
-        return res.send(response);
+        return res.status(200).send(response);
     } catch (error) {
         return res.status(400).send({Error: error.message});
     }

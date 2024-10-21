@@ -4,9 +4,7 @@ const { hashPassword } = require('../security/hashPass');
 
 const createUserController = async (name, username, email, password, role) =>{
     // if(users.some(user => user.email === email)) throw new Error('El usuario ya existe');
-  
     const hashedPassword = await hashPassword(password);
-    console.log(hashPassword);
     const newUserController = User ({name, username, email, password: hashedPassword, role});
     newUserController.save();
     return newUserController;
@@ -24,7 +22,7 @@ const getUserByNameController = async(name) => {
 };
 
 const getUserByIdController = async(id) =>{
-    const userById = User.findById(id);
+    const userById = await User.findById(id);
     if(!userById) throw new Error('No existe el id');
     return userById;
 };

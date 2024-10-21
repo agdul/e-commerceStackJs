@@ -5,14 +5,14 @@ const { authAdmin } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
-router.get('/', getAllUserHandler);
+router.get('/', tokenMiddelware, getAllUserHandler);
 
-router.get('/:id', getOneUserHandler);
+router.get('/:id', tokenMiddelware, getOneUserHandler);
 
 router.post('/', tokenMiddelware, authAdmin, setNewUserHandler);
 
 router.put('/:id', tokenMiddelware, authAdmin, editUserHandler);
 
-router.delete('/:id', deleteUserHandler);
+router.delete('/:id', tokenMiddelware, authAdmin, deleteUserHandler);
 
 module.exports = router;
