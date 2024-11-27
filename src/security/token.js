@@ -21,7 +21,7 @@ async function verifyToken(token) {
     const secretKey = process.env.SECRET_KEY;
     try {
        const decoded = jwt.verify(token, secretKey);
-        return decoded;
+       return decoded;
     }catch (error) {
         throw new Error('Token invalido');
     }

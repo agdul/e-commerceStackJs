@@ -12,7 +12,8 @@ const tokenMiddelware = async (req, res, next) => {
 
     //Este va ser mi nuevo usuario autorizado y lo mando x req
     req.user = validateToken;
-
+    
+    // Para debuggear el token validado
     console.log(validateToken);
     next();
 

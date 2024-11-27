@@ -8,7 +8,7 @@ const addProductoCartHandler = async (req, res) => {
       return res.status(400).send({ error: error.details[0].message });
     }
 
-    const { userId } = req; // Asegúrate de que el middleware de autenticación añada `userId` al objeto `req`.
+    const { userId } = req.user; // Asegúrate de que el middleware de autenticación añada `userId` al objeto `req`.
     const { cod_articulo, quantity } = req.body;
     const response = await addProductToCartController(userId, cod_articulo, quantity);
     return res.status(201).send(response);
@@ -20,11 +20,11 @@ const addProductoCartHandler = async (req, res) => {
 
 const viewCartHandler = async (req, res) => {
   try {
-    const { error } = cartValidator.validate(req.query);
-    if (error) {
-      return res.status(400).send({ error: error.details[0].message });
-    }
-    const { userId } = req;
+    // const { error } = cartValidator.validate(req.query);
+    // if (error) {
+    //   return res.status(400).send({ error: error.details[0].message });
+    // }
+    const { userId } = req.user;
     const response = await viewCartController(userId);
     return res.status(200).send(response);
 
