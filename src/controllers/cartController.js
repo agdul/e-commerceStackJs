@@ -52,7 +52,4 @@ const addProductToCartController = async (userId, productId, quantity) => {
     return { items: cartDetails, subtotal };
   };
   
-  module.exports = {
-    addProductToCartController,
-    viewCartController,
-  };
+  module.exports = { addProductToCartController, viewCartController };
