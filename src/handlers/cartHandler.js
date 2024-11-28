@@ -24,7 +24,7 @@ const viewCartHandler = async (req, res) => {
     // if (error) {
     //   return res.status(400).send({ error: error.details[0].message });
     // }
-    const { userId } = req.user;
+
     const response = await viewCartController(userId);
     return res.status(200).send(response);
 

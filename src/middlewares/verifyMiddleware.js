@@ -14,7 +14,7 @@ const tokenMiddelware = async (req, res, next) => {
     req.user = validateToken;
     
     // Para debuggear el token validado
-    console.log(validateToken);
+    // console.log(validateToken);
     next();
 
     } catch (error) {

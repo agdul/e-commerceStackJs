@@ -4,6 +4,13 @@ const Joi = require("joi");
 const orderValidator = Joi.object({
     items: Joi.array().items(
         Joi.object({
+            id: Joi.string()
+                .required()
+                .messages({
+                    'string.base': 'El ID debe ser un texto.',
+                    'string.empty': 'El ID no puede estar vacío.',
+                    'any.required': 'El ID es obligatorio.',
+                }),
             title: Joi.string()
                 .required()
                 .messages({
@@ -21,7 +28,7 @@ const orderValidator = Joi.object({
                     'number.min': 'La cantidad debe ser al menos {#limit}.',
                     'any.required': 'La cantidad es obligatoria.',
                 }),
-            price: Joi.number()
+            unit_price: Joi.number()
                 .precision(2)
                 .min(0)
                 .required()
@@ -29,6 +36,15 @@ const orderValidator = Joi.object({
                     'number.base': 'El precio debe ser un número.',
                     'number.min': 'El precio debe ser mayor o igual a {#limit}.',
                     'any.required': 'El precio es obligatorio.',
+                }),
+            total: Joi.number() // Incluir la validación para `total`
+                .precision(2)
+                .min(0)
+                .required()
+                .messages({
+                    'number.base': 'El total debe ser un número.',
+                    'number.min': 'El total debe ser mayor o igual a {#limit}.',
+                    'any.required': 'El total es obligatorio.',
                 }),
         })
     ).min(1).required()

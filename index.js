@@ -6,8 +6,7 @@ const PORT = process.env.PORT;
 async function mainIndex() {
     try {
         await mongoose.connection;
-        console.log('Conecectandose a la db ... ');
-        app.listen(PORT, console.log(`Server escuchando en el puerto ${PORT}`));
+        app.listen(PORT, console.log(`✅ [Server Listening] ON PORT: ${PORT}`));
     } catch (error) {
         console.error('Error al conectarse a la base de dato', error);
     }

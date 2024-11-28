@@ -50,7 +50,7 @@ const addProductToCartController = async (userId, cod_articulo, quantity) => {
   
     const subtotal = cartDetails.reduce((sum, item) => sum + item.total, 0);
 
-    console.log(cartDetails)
+    //console.log(cartDetails)
   
     return { items: cartDetails, subtotal };
   };
