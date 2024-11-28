@@ -1,11 +1,11 @@
-const { Articulo } = require('../models/articuloModel');
+const Articulo = require('../models/articuloModel');
 
 
-const createArticuloController = async (cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo) => {
+const createArticuloController = async (cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo, stock_articulo) => {
     const articuloExiste = await Articulo.findOne({cod_articulo});
     if(articuloExiste) throw new Error('El código de artículo ya existe');
 
-    const newArticulo = new Articulo({cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo});
+    const newArticulo = new Articulo({cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo, stock_articulo});
     newArticulo.save();
     return newArticulo;
 }
@@ -22,8 +22,8 @@ const getArticuloByIdController = async (cod_articulo) => {
     return articuloById;
 }
 
-const updateArticuloController = async (cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo) => {
-    const newArticulo = {cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo};
+const updateArticuloController = async (cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo, stock_articulo) => {
+    const newArticulo = {cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo, stock_articulo};
     const updateArticulo = await Articulo.findByIdAndUpdate(cod_articulo, newArticulo, {new: true});
     if(!updateArticulo) throw new Error('No se pudo actualiar el articulo');
     return updateArticulo;

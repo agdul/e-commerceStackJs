@@ -24,6 +24,12 @@ const articuloSchema = new mongoose.Schema({
     required: true,
     min: 0,
   },
+  stock_articulo: {
+    type: Number,
+    required: true, // Opcional, según tus necesidades
+    default: 0, // Define un valor inicial si lo deseas
+    min: 0,
+  },
 },
 {
     collection: 'articulos'

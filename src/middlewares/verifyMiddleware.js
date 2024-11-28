@@ -22,4 +22,4 @@ const tokenMiddelware = async (req, res, next) => {
     }   
 }
 
-module.exports = { tokenMiddelware  };
+module.exports = { tokenMiddelware };

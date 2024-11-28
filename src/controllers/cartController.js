@@ -9,7 +9,7 @@ const addProductToCartController = async (userId, cod_articulo, quantity) => {
     }
   
     // Verificar stock
-    if (product.stock < quantity) {
+    if (product.stock_articulo < quantity) {
       throw new Error('Stock insuficiente');
     }
   
@@ -41,13 +41,16 @@ const addProductToCartController = async (userId, cod_articulo, quantity) => {
     }
   
     const cartDetails = cart.items.map((item) => ({
-      product: item.cod_articulo.nombre_articulo,
-      price: item.cod_articulo.precio_articulo,
+      id: item.cod_articulo._id.toString(),
+      title: item.cod_articulo.nombre_articulo,
+      unit_price: item.cod_articulo.precio_articulo,
       quantity: item.quantity,
       total: item.cod_articulo.precio_articulo * item.quantity,
     }));
   
     const subtotal = cartDetails.reduce((sum, item) => sum + item.total, 0);
+
+    console.log(cartDetails)
   
     return { items: cartDetails, subtotal };
   };

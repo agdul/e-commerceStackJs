@@ -6,8 +6,8 @@ const createArticuloHandlers = async(req, res) => {
         const { error } = articuloValidator.validate(req.body);
         if(error) return res.status(400).send(error.details[0].message);
 
-        const { cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo } = req.body;
-        const response = await createArticuloController(cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo);
+        const { cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo, stock_articulo } = req.body;
+        const response = await createArticuloController(cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo, stock_articulo);
         return res.status(201).send(response);   
     } catch (error) {
         return res.status(500).send({ error: error.message });
@@ -49,8 +49,8 @@ const updateArticuloHandlers = async(req, res) => {
         if(error) return res.status(400).send(error.details[0].message);
 
         const { cod_articulo } = req.params;
-        const { nombre_articulo, descripcion_articulo, precio_articulo } = req.body;
-        const response = await updateArticuloController(cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo);
+        const { nombre_articulo, descripcion_articulo, precio_articulo, stock_articulo } = req.body;
+        const response = await updateArticuloController(cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo, stock_articulo);
         return res.status(200).send(response);
     } catch (error) {
         return res.status(404).send({ error: error.message });

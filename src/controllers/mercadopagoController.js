@@ -4,21 +4,20 @@ const createOrderController = async (items) => {
     try {
         const preference = await new Preference(client).create({
             body : {
-                items: [
-                    {
-                    id: '123',
-                    title: 'BOCA KPO 123',
-                    quantity: 1,
-                    unit_price: 2500
-                }
-                ],
-                metadata : {
-                    custom_id: 'ABC123'
+                items,
+                metadata : { //metadata: info adicinal que nosotros queramos mandar
+                    custom_id: 'ABC123',
+                    order_details: items.map(items => ({
+                        title: items.title,
+                        quantity: items.quantity,
+                        currency_id: 'ARS',
+                        unit_price: items.price
+                    }))
                 }
             }
         });
 
-        return preference.init_point;
+        return {init_point: preference.init_point, order_details: preference.body };
         
     } catch (error) {
         throw new Error(error.message);

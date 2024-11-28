@@ -40,3 +40,9 @@ const User = mongoose.model("User", userSchema);
 
 
 module.exports = { User };
+
+
+// USER admin
+
+//  "email": "admin@admin.com",
+//   "password": "Admin123"

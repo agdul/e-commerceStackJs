@@ -40,6 +40,16 @@ const articuloValidator = Joi.object({
             'number.min': 'El precio del artículo debe ser mayor o igual a {#limit}',
             'any.required': 'El precio del artículo es obligatorio',
         }),
+    stock_articulo: Joi.number()
+        .integer()
+        .min(0)
+        .required()
+        .messages({
+            'number.base': 'El stock del artículo debe ser un número entero',
+            'number.integer': 'El stock del artículo debe ser un número entero',
+            'number.min': 'El stock del artículo debe ser mayor o igual a {#limit}',
+            'any.required': 'El stock del artículo es obligatorio',
+        }),
 });
 
 module.exports = { articuloValidator };

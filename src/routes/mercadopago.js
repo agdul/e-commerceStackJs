@@ -1,10 +1,11 @@
 const express = require('express');
+const { tokenMiddelware } = require('../middlewares/verifyMiddleware');
 const { createOrderHandler } = require('../handlers/mercadopagoHandler');
 
 
 const router = express.Router();
 
-router.get('/create-order', createOrderHandler);
+router.get('/create-order', tokenMiddelware, createOrderHandler);
 
 router.get('/success', (req, res) => res.send('success') )
 
