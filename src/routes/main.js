@@ -8,7 +8,7 @@ const xd = fs.readdirSync(PATH_ROUTES).filter((file) =>{
     const name = removeext(file);
     
     if(name !== 'main'){
-        console.log('rutas cargadas ,',name);
+        console.log('✅ [Rutas Cargadas] :',name);
         router.use(`/${name}`, require(`./${name}`));
     };
     

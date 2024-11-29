@@ -1,17 +1,20 @@
 
-const {client, Preference} = require ('../mp/mercadopagoConfig');
+const {client, Preference, Payment, mercadopago} = require ('../mp/mercadopagoConfig');
 
 const createOrderController = async (items, userId) => {
     try {
-
+        
         // Para pasar bien los datos a la api de mp debes asegurarte de que cada artículo sea incluido como un objeto en el array items de la preferencia.
-
+        console.log(items);
         const formatedItems = items.map((item)=>({
+            id: item.id,
             title: item.title,
+            description: item.description,  //Descripcion del artículo
             quantity: item.quantity,
             currency_id: 'ARS',
             unit_price: item.unit_price,
         }))
+        console.log(formatedItems)
 
          // Crear la preferencia(orden de pago) de Mercado Pago
         const preference = await new Preference(client).create({
@@ -24,6 +27,8 @@ const createOrderController = async (items, userId) => {
                 }
             }
         });
+
+        //console.log('Preferencia creada:', preference);
 
         return {
             init_point: preference.init_point, 
@@ -38,12 +43,39 @@ const createOrderController = async (items, userId) => {
 
 const getPaymentDetails = async (paymentId) => { //Detalle de la orden de pago 
     try { 
-        const payment = await client.get(`/v1/payments/${paymentId}`);
-        console.log('Detalles del pago:', payment.response);
-        console.log('Metadata:', payment.response.metadata);
-        console.log('Metadata:', payment.response.status);
+        // Obtener detalles del pago
+        const payment = new Payment(client);
+     
+        console.log('Detalles del pago:', payment);
+
+        const paymentDetails = await payment.get(paymentId);
+
+        console.log('Detalles1 del pago:', paymentDetails);
+        // Verifica si la respuesta es exitosa
+        if (paymentDetails.status === 200 && paymentDetails.response) {
+        const paymentStatus = paymentDetails.response.status;
+  
+        // Verifica si el estado del pago es 'approved'
+        if (paymentStatus === 'approved') {
+          console.log("Pago aprobado. Procesando...");
+          // Aquí puedes registrar el pago en tu base de datos, enviar notificaciones, etc.
+        } else {
+          console.log(`Pago no aprobado. Estado: ${paymentStatus}`);
+        }
+      } else {
+        console.error('No se pudieron obtener los detalles del pago.');
+      }
+
+        // console.log('Metadata:', client.response.metadata);
+        // console.log('Metadata:', client.response.status);
+        
+
     } catch(error){
         console.error('Error obteniendo detalles del pago:', error.message);
     }
 }
+
+
+
+
 module.exports = { createOrderController, getPaymentDetails };
