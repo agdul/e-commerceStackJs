@@ -1,4 +1,4 @@
-const { MercadoPagoConfig, Payment, Preference, MercadoPago} = require('mercadopago');
+const { MercadoPagoConfig, Payment, Preference} = require('mercadopago');
 const accessToken = process.env.MP_ACCESS_TOKEN;
 const mercadopago = require ('mercadopago');
 
@@ -12,16 +12,14 @@ if (!accessToken) {
 
 //MercadoPago.configurations.setAccessToken(accessToken);
 //const client = new MercadoPagoConfig({accessToken});
-const client = new MercadoPagoConfig({accessToken});
+const client = new MercadoPagoConfig({accessToken: accessToken});
 //const payment = new Payment(client);
 //const client = new MercadoPago({accessToken: accessToken});
 //client.configurations.setAccessToken(accessToken);
 
 console.log("✅ [Mercado Pago] Configuración establecida correctamente.");
 
-console.log(client);
+// console.log(client);
 
 
-
-
-module.exports = { client, Payment, Preference, MercadoPago};
+module.exports = { client, Payment, Preference};

@@ -43,6 +43,7 @@ const addProductToCartController = async (userId, cod_articulo, quantity) => {
     const cartDetails = cart.items.map((item) => ({
       id: item.cod_articulo._id.toString(),
       title: item.cod_articulo.nombre_articulo,
+      description: item.cod_articulo.descripcion_articulo,
       unit_price: item.cod_articulo.precio_articulo,
       quantity: item.quantity,
       total: item.cod_articulo.precio_articulo * item.quantity,

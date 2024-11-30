@@ -10,6 +10,7 @@ const createOrderHandler = async (req, res) =>{
 
         if(!cart || !cart.items.length) return res.status(400).send({ message: 'No hay productos en el carrito' });
 
+        //console.log(cart.items);
         // Crear la orden en Mercado Pago
         const response = await createOrderController(cart.items, userId);
         return res.status(201).send(response);        
@@ -26,10 +27,10 @@ const webhookHandler = async (req, res) => {
 
         const notification = req.body;
 
-        const { id, topic, type } = notification;
+        const { id, type } = notification;
 
         console.log(notification);
-        if (topic === 'payment' || type === 'payment') {
+        if (type === 'payment') {
             await getPaymentDetails(id);
         } else {
             console.log(`Tema de la notificación no esperado: ${topic}`);
