@@ -91,6 +91,14 @@ const getPaymentDetails = async (paymentId) => { //Detalle de la orden de pago
     }
 }
 
+const consultarPagoController = async (idComprobante) => {
+    try {
+        const paymentDetails = await client.payment
+        
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
 
 
 
