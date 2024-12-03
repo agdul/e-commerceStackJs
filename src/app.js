@@ -1,15 +1,17 @@
-const express = require('express');
-const morgan = require('morgan');
-const router = require('./routes/main')
+const express = require("express");
+const morgan = require("morgan");
+const router = require("./routes/main");
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require("../swagger-output.json");
 
 const app = express();
 
 app.use(express.json());
 
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
-app.use('/', router);
+app.use("/", router);
 
-
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 module.exports = app;
