@@ -1,10 +1,13 @@
-
 const { User } = require('../models/userModel');
 const { hashPassword, matchPassword } = require('../security/hashPass');
 const { generateToken } = require('../security/token');
 
-const registerController = async (name, username, email, password, role = 'user')=>{
-    //if(users.some(user => user.email === email)) throw new Error('El usuario ya existe');
+const registerController = async (name, username, email, password)=>{
+
+    const existUser = await User.findOne({ email });
+    if(existUser) throw new Error('El usuario ya existe');
+      
+    const role = 'user';
 
     const hashedPassword = await hashPassword(password);
     
