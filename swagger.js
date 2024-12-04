@@ -1,4 +1,4 @@
-const swaggerAutogen = require("swagger-autogen");
+const swaggerAutogen = require("swagger-autogen")({ openapi: "3.0.0" });
 
 const doc = {
   info: {
@@ -20,7 +20,14 @@ const doc = {
     },
     // { ... }
   ],
-  securityDefinitions: {}, // by default: empty object
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+      },
+    },
+  },
   definitions: {}, // by default: empty object
 };
 
@@ -31,7 +38,7 @@ const routes = ["./src/routes/main.js"];
 /* NOTE: If you are using the express Router, you must pass in the 'routes' only the
 root file where the route starts, such as index.js, app.js, routes.js, etc ... */
 
-swaggerAutogen()(outputFile, routes, doc)
+swaggerAutogen(outputFile, routes, doc)
   .then(() => {
     require("./index.js");
   })

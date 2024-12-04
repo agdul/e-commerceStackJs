@@ -28,23 +28,43 @@ router.use(
 router.use(
   "/users",
   usersRouter
-  // #swagger.tags = ['Users']
+  /*
+  #swagger.tags = ['Users']
+  #swagger.security = [{
+      "bearerAuth": []
+  }]
+  */
 );
 router.use(
   "/products",
   productsRouter
-  // #swagger.tags = ['Products']
+  /*
+  #swagger.tags = ['Products']
+  #swagger.security = [{
+      "bearerAuth": []
+  }]
+  */
 );
 
 router.use(
   "/cart",
   cartRouter
-  // #swagger.tags = ['Cart']
+  /*
+  #swagger.tags = ['Cart']
+  #swagger.security = [{
+      "bearerAuth": []
+  }]
+  */
 );
 router.use(
   "/mercadopago",
   mercadopagoRouter
-  // #swagger.tags = ['MercadoPago']
+  /*
+  #swagger.tags = ['Mercadopago']
+  #swagger.security = [{
+      "bearerAuth": []
+  }]
+  */
 );
 
 module.exports = router;
