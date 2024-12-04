@@ -10,8 +10,6 @@ app.use(express.json());
 
 app.use(morgan("dev"));
 
-app.use("/", router);
-
 // Enable CORS for all routes
 app.use((_, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -19,6 +17,8 @@ app.use((_, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
+
+app.use("/", router);
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
