@@ -21,22 +21,22 @@ const createOrderHandler = async (req, res) =>{
 
 const webhookHandler = async (req, res) => {
     try {
-        //console.log(req);
         res.status(200).send('OK');
+        //console.log(req);
         console.log('Headers:', req.headers);
         console.log('Body recibido:', req.body);
-
+        
         const notification = req.body;
-
+        
         const { id, type } = notification;
-
+        
         console.log(notification);
         if (type === 'payment') {
             await getPaymentDetails(id);
         } else {
             console.log(`Tema de la notificación no esperado: ${type}`);
         }
-
+        
     } catch (error) {
         console.error('Error procesando el webhook:', error.message);
         res.status(500).send('Error interno');
