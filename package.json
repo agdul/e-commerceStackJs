@@ -4,13 +4,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "nodemon swagger.js",
+    "swagger": "node swagger.mjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
-  
   "dependencies": {
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
@@ -22,5 +22,9 @@
     "mongoose": "^8.7.1",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.7"
+  },
+  "devDependencies": {
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1"
   }
 }
