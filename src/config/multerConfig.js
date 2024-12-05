@@ -1,16 +1,20 @@
 const multer = require('multer');
-const {v4: uuidv4} = require('uuid');
-const path = require('path');
 
-// Configuracion de Multer
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads'); // Carpeta donde se guardarán los archivos
-    },
-    filename: (req, file, cb) => {
-        const uniqueName = `${uuidv4()}${path.extname(file.originalname)}`; // Nombre único con extensión
-        cb(null, uniqueName); // Nombre único para cada archivo
-    },
-});
+const storage = multer.memoryStorage();
 
-module.exports = { multer , storage };
+const uploadImgMiddleware = multer({
+    storage,
+    limits: {
+      fileSize: 2 * 1024 * 1024, // Límite de 2MB
+    },
+    fileFilter: (req, file, cb) => {
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      if (!allowedTypes.includes(file.mimetype)) {
+        cb(new Error('Solo se permiten archivos de imagen (JPEG, PNG, JPG).'));
+      } else {
+        cb(null, true);
+      }
+    },
+  });
+
+module.exports = { uploadImgMiddleware };

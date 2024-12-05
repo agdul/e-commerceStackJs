@@ -44,27 +44,30 @@ const deleteArticuloController = async (cod_articulo) => {
 
 const uploadImagenController = async (file, articuloId) =>{
     try {
-        // Implementación para subir la imagen al storage
-        const result = await cloudinary.uploader.upload(file.path, {
-            folder: 'uploads/',
-            public_id: uuidv4(),
-        })
-
-        // Creamos el nuevo registro en la tabla imagen
-        const newImg = new Imagen({
-            id_articulo: articuloId,
-            img_url: result.secure_url,
-
-        });
-
-        await newImg.save();
-
-        return newImg;
-
-    } catch (error) {
+        // Subir la imagen usando el buffer
+        const result = await cloudinary.uploader.upload_stream(
+          { folder: 'uploads/', public_id: uuidv4() },
+          async (error, result) => {
+            if (error) throw new Error('⚠ Error al subir la imagen a Cloudinary.');
+    
+            // Guardar URL de la imagen en la base de datos
+            const newImg = new Imagen({
+              id_articulo: articuloId,
+              img_url: result.secure_url,
+            });
+    
+            await newImg.save();
+            return newImg;
+          }
+        );
+    
+        // Crear el stream y enviar el buffer
+        const stream = cloudinary.uploader.upload_stream();
+        stream.end(file.buffer);
+      } catch (error) {
         console.error('⚠ Error al subir imagen a Cloudinary:', error);
         throw new Error('⚠ Error al subir la imagen.');
-        
-    }
-}
+      }
+};
+
 module.exports = { createArticuloController, getAllArticuloController, getArticuloByIdController, updateArticuloController, deleteArticuloController, uploadImagenController };
