@@ -4,6 +4,7 @@ const articuloValidator = Joi.object({
     cod_articulo: Joi.string()
         .min(5)
         .max(15)
+        .required()
         .messages({
             'string.base': 'El código de artículo debe ser un texto',
             'string.empty': 'El código de artículo no puede estar vacío',

@@ -3,10 +3,17 @@ const { articuloValidator } = require('../validators/articuloValidator');
 
 const createArticuloHandlers = async(req, res) => {
     try {
+
+        console.log({
+            respuesta_completa: req,
+            
+        })
         // recibo del front y valido 
-        const { error } = articuloValidator.validate(req.body);
+        const { error } = articuloValidator.validate(req.body, { abortEarly: false });
         const file = req.file;
         
+
+
         //Validaciones de que lo que recibi este bien 
         if(error) return res.status(400).send(error.details[0].message);
         if (!file) return res.status(400).send('No se ha subido ninguna imagen');
