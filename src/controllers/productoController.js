@@ -46,7 +46,7 @@ const uploadImagenController = async (file, articuloId) =>{
     try {
         // Implementación para subir la imagen al storage
         const result = await cloudinary.uploader.upload(file.path, {
-            folder: 'e-commerce',
+            folder: 'uploads/',
             public_id: uuidv4(),
         })
 

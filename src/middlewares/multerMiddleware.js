@@ -15,4 +15,6 @@ const uploadImgMiddleware = multer({
     },
   });
 
-  module.exports = { uploadImgMiddleware };
+  const uploadsMiddleware = multer({ uploadImgMiddleware })
+
+  module.exports = { uploadsMiddleware };
