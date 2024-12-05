@@ -27,7 +27,7 @@ const userValidator = Joi.object({
             'any.required': 'El email es obligatorio',
         }),
     password: Joi.string()
-        .pattern(/^(?=(.*[A-Z]))(?=(.*\d))([A-Za-z\d]{6,24})$/)
+        .pattern(/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d.]{6,24}$/)
         .required()
         .messages({
             'string.pattern.base': 'La contraseña debe tener entre 6 y 24 caracteres, al menos una letra mayúscula y un número',
@@ -79,11 +79,11 @@ const userUpdateValidator = Joi.object({
         .messages({
             'string.pattern.base': 'La contraseña debe tener entre 6 y 24 caracteres, al menos una letra mayúscula y un número',
         }),
-    role: Joi.string()
-        .valid('admin', 'user')
-        .messages({
-            'any.only': 'El rol debe ser "admin" o "user"',
-        }),
+    // role: Joi.string()
+    //     .valid('admin', 'user')
+    //     .messages({
+    //         'any.only': 'El rol debe ser "admin" o "user"',
+    //     }),
     __v: Joi.number()
         .optional()
         .messages({'__v': 'Falta el campo',})  // Lo hacemos opcional ya que no siempre lo necesitas en el cuerpo

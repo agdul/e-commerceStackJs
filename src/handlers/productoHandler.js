@@ -1,14 +1,30 @@
-const { createArticuloController, getAllArticuloController, getArticuloByIdController, updateArticuloController, deleteArticuloController } = require('../controllers/productoController');
+const { createArticuloController, getAllArticuloController, getArticuloByIdController, updateArticuloController, deleteArticuloController, uploadImagenController } = require('../controllers/productoController');
 const { articuloValidator } = require('../validators/articuloValidator');
 
 const createArticuloHandlers = async(req, res) => {
     try {
+        // recibo del front y valido 
         const { error } = articuloValidator.validate(req.body);
+        const file = req.file;
+        
+        //Validaciones de que lo que recibi este bien 
         if(error) return res.status(400).send(error.details[0].message);
+        if (!file) return res.status(400).send('No se ha subido ninguna imagen');
 
+        //Desestructuracion 
         const { cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo, stock_articulo } = req.body;
-        const response = await createArticuloController(cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo, stock_articulo);
-        return res.status(201).send(response);   
+
+        //Creo el articulo 
+        const newArticulo = await createArticuloController(cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo, stock_articulo);
+
+        // Subimos la imagen y registramos la relacion con el articulo
+        const newImagen = await uploadImagenController(file, newArticulo._id);
+        
+
+        return res.status(201).send({
+            articulo: newArticulo,
+            imgUrl: newImagen,
+        });   
     } catch (error) {
         return res.status(500).send({ error: error.message });
     }

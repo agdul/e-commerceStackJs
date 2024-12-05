@@ -1,4 +1,7 @@
+const { cloudinary } = require('../config/cloudinaryConfig');
+const { v4: uuidv4 } = require('uuid');
 const Articulo = require('../models/articuloModel');
+const Imagen = require('../models/imgModel');
 
 
 const createArticuloController = async (cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo, stock_articulo) => {
@@ -39,4 +42,29 @@ const deleteArticuloController = async (cod_articulo) => {
     }
 }
 
-module.exports = { createArticuloController, getAllArticuloController, getArticuloByIdController, updateArticuloController, deleteArticuloController };
+const uploadImagenController = async (file, articuloId) =>{
+    try {
+        // Implementación para subir la imagen al storage
+        const result = await cloudinary.uploader.upload(file.path, {
+            folder: 'e-commerce',
+            public_id: uuidv4(),
+        })
+
+        // Creamos el nuevo registro en la tabla imagen
+        const newImg = new Imagen({
+            id_articulo: articuloId,
+            img_url: result.secure_url,
+
+        });
+
+        await newImg.save();
+
+        return newImg;
+
+    } catch (error) {
+        console.error('⚠ Error al subir imagen a Cloudinary:', error);
+        throw new Error('⚠ Error al subir la imagen.');
+        
+    }
+}
+module.exports = { createArticuloController, getAllArticuloController, getArticuloByIdController, updateArticuloController, deleteArticuloController, uploadImagenController };
