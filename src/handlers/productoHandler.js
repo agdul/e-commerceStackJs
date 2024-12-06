@@ -71,10 +71,34 @@ const updateArticuloHandlers = async(req, res) => {
         const { error } = articuloValidator.validate(req.body);
         if(error) return res.status(400).send(error.details[0].message);
 
+        const file = req.file;
         const { cod_articulo } = req.params;
         const { nombre_articulo, descripcion_articulo, precio_articulo, stock_articulo } = req.body;
-        const response = await updateArticuloController(cod_articulo, nombre_articulo, descripcion_articulo, precio_articulo, stock_articulo);
-        return res.status(200).send(response);
+
+        // Verificar si hay datos para actualizar
+        let articuloActualizado = null;
+        if (nombre_articulo || descripcion_articulo || precio_articulo || stock_articulo) {
+            articuloActualizado = await updateArticuloController(cod_articulo, {
+                nombre_articulo,
+                descripcion_articulo,
+                precio_articulo,
+                stock_articulo,
+            });
+        }
+       // Procesar la imagen si se envió
+       let nuevaImagen = null;
+       if (file && articuloActualizado) {
+           nuevaImagen = await uploadImagenController(file, articuloActualizado._id);
+       }
+
+       // Construir la respuesta
+       const response = {
+           articulo: articuloActualizado,
+           imgUrl: nuevaImagen,
+       };
+
+       return res.status(200).send(response);
+
     } catch (error) {
         return res.status(404).send({ error: error.message });
     }
@@ -82,13 +106,17 @@ const updateArticuloHandlers = async(req, res) => {
 
 const deleteArticuloHandlers = async(req, res) => {
     try {
-        const { cod_articulo } = req.params;
-        const response = await deleteArticuloController(cod_articulo);
-        return res.status(200).send(response);
+        const { articuloId , imageId } = req.params;
+
+        const response = await deleteArticuloController(articuloId, imageId);
+        return res.status(200).send({ success: true, message: "Artículo eliminado con éxito" });
     } catch (error) {
         return res.status(404).send({ error: error.message });
     }
 }
+
+
+
 
 module.exports = { createArticuloHandlers, getAllArticuloHandlers, getArticuloByIdHandlers, updateArticuloHandlers, deleteArticuloHandlers };
 

@@ -9,9 +9,9 @@ const router = express.Router();
 
 router.get('/', tokenMiddelware, authAdmin, getAllArticuloHandlers);
 router.get('/:cod_articulo', tokenMiddelware, authAdmin, getArticuloByIdHandlers);
-router.post('/', tokenMiddelware, authAdmin, uploadImgMiddleware.single('image') ,createArticuloHandlers);
-router.put('/:cod_articulo', tokenMiddelware, authAdmin, updateArticuloHandlers);
-router.delete('/:cod_articulo', tokenMiddelware, authAdmin, deleteArticuloHandlers); 
+router.post('/', tokenMiddelware, authAdmin, uploadImgMiddleware.single('image'),createArticuloHandlers);
+router.put('/:cod_articulo', tokenMiddelware, authAdmin, uploadImgMiddleware.single('image'),updateArticuloHandlers);
+router.delete('/:articuloId/:imageId', tokenMiddelware, authAdmin, deleteArticuloHandlers); 
 
 
 module.exports = router;
